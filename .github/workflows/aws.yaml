@@ -12,6 +12,9 @@ jobs:
     name: Deploy
     runs-on: ubuntu-latest
     environment: Development
+    permissions:
+      id-token: write
+      contents: read
 
     steps:
       - name: Checkout
