@@ -29,7 +29,15 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
           role-to-assume: ${{ vars.AWS_ROLE_TO_ASSUME }}
 
-      - name: Additional Steps
-        run : |
-          # Your commands that require AWS credentials
-          aws sts get-caller-identity
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v2
+        id: login-ecr
+
+      - name: Build, tag and push docker image to AWS ECR
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: galdoway.dev/web-app
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t galdoway.dev/web-app:$IMAGE_TAG .
+          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
