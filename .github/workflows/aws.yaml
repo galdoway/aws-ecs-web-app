@@ -27,7 +27,7 @@ jobs:
         with:
           # audience: ${{ vars.AWS_CREDENTIALS_AUDIENCE }}
           aws-region: ${{ secrets.AWS_REGION }}
-          role-to-assume: ${{ vars.AWS_ROLE_TO_ASSUME }}
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
 
       - name: Login to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v2
