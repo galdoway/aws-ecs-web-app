@@ -4,6 +4,9 @@ on:
     branches:
       - dev
 
+env:
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+
 jobs:
   deploy:
     name: Deploy
@@ -14,5 +17,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
-      - name: Say "Hello, World!"
-        run: echo "Hello, World!"
+      - name: Configure AWS Crendetials
+        uses: aws-actions/configure-aws-credentials@v5.1.0
+        with:
+          # audience: ${{ vars.AWS_CREDENTIALS_AUDIENCE }}
+          aws-region: ${{ secrets.AWS_REGION }}
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+      - name: Additional Steps
+        run : |
+          # Your commands that require AWS credentials
+          aws sts get-caller-identity
